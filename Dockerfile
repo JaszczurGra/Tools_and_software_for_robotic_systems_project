@@ -10,7 +10,7 @@ RUN apt-get update && rosdep update && rosdep install -i --from-paths project/sr
 
 RUN cd project && source /opt/ros/jazzy/setup.bash && colcon build
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# RUN chmod +x /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
 
 CMD ["bash"]

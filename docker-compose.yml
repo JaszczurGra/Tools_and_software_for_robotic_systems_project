@@ -15,10 +15,10 @@ services:
       - ROS_DOMAIN_ID=0
       #for x 11
       # - XAUTHORITY=/root/.Xauthority
-      - DISPLAY=:0 
+      - DISPLAY=:${DISPLAY}
       - QT_QPA_PLATFORM=xcb 
       - QT_X11_NO_MITSHM=1
-
+      - XAUTHORITY=/root/.Xauthority
       # - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
 
       #for wayland
@@ -31,7 +31,8 @@ services:
       # - ${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}:/tmp/${WAYLAND_DISPLAY}
       # - ${XDG_RUNTIME_DIR}:/run/user/$(id -u) 
       #for x11
-      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority:rw
       # - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority:rw
     command: >
       ros2 launch ur_robot_driver ur_control.launch.py
@@ -56,8 +57,8 @@ services:
       - ROBOT_MODEL=UR5e
     volumes:
       - ./ursim/os:/urcapsos
-      - ./ursim/programs:/ursim/programs.UR5
-      - ./ursim/caps:/ursim/.urcaps
+      - ./ursim/programs:/ursim/.urcaps
+      - ./ursim/ursim_data:/ursim/programs.UR5
       - ./ursim/cache:/ursim/GUI/felix-cache
 
 networks:
