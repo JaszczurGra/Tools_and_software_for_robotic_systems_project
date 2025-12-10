@@ -13,7 +13,7 @@ class TrajectoryPublisher(Node):
         self.subscription = self.create_subscription(Point, '/point', 
                                                      self.listener_callback, 10) 
         self.traj_msg = JointTrajectory()
-        self.traj_msg.joint_names = ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6']
+        self.traj_msg.joint_names = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
         point = JointTrajectoryPoint()
         point.positions = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         point.velocities = [0.0]*6
