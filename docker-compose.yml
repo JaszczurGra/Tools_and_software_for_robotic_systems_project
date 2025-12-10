@@ -1,0 +1,68 @@
+services:
+  ros2_viz:
+    build: .
+    container_name: ros2_viz
+    networks:
+      ur_net:
+        ipv4_address: 180.25.0.10
+    restart: always
+    devices:
+      - /dev/dri:/dev/dri
+    privileged: true
+    # network_mode: host
+
+    environment:
+      - ROS_DOMAIN_ID=0
+      #for x 11
+      # - XAUTHORITY=/root/.Xauthority
+      - DISPLAY=:0 
+      - QT_QPA_PLATFORM=xcb 
+      - QT_X11_NO_MITSHM=1
+
+      # - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
+
+      #for wayland
+      # - WAYLAND_DISPLAY=${WAYLAND_DISPLAY}
+
+    volumes:
+   
+      - ./src:/app/project/src
+      #for arch wayland 
+      # - ${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}:/tmp/${WAYLAND_DISPLAY}
+      # - ${XDG_RUNTIME_DIR}:/run/user/$(id -u) 
+      #for x11
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      # - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority:rw
+    command: >
+      ros2 launch ur_robot_driver ur_control.launch.py
+      ur_type:=ur5e
+      robot_ip:=180.25.0.20
+      reverse_ip:=180.25.0.10
+      headless_mode:=false
+      launch_rviz:=true
+      use_fake_hardware:=false
+      initial_joint_controller:=scaled_joint_trajectory_controller
+      controller_spawner_timeout:=60
+  ursim:
+    image: universalrobots/ursim_e-series:latest
+    container_name: ursim
+    networks:
+      ur_net:
+        ipv4_address: 180.25.0.20
+    ports:
+      - "6080:6080"
+      - "5900:5900"
+    environment:
+      - ROBOT_MODEL=UR5e
+    volumes:
+      - ./ursim/os:/urcapsos
+      - ./ursim/programs:/ursim/programs.UR5
+      - ./ursim/caps:/ursim/.urcaps
+      - ./ursim/cache:/ursim/GUI/felix-cache
+
+networks:
+  ur_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 180.25.0.0/16
