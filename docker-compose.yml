@@ -35,7 +35,7 @@ services:
       - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority:rw
       # - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority:rw
     command: >
-      ros2 launch ur_robot_driver ur_control.launch.py
+      bash -c "sleep 20 && ros2 launch ur_robot_driver ur_control.launch.py
       ur_type:=ur5e
       robot_ip:=180.25.0.20
       reverse_ip:=180.25.0.10
@@ -46,7 +46,7 @@ services:
       controller_spawner_timeout:=60 & 
       ros2 run usb_cam usb_cam_node_exe &
       ros2 run draw_rectangles rectangle_node &
-      ros2 run joint_trajectory_node joint_trajectory_node
+      ros2 run joint_trajectory_node joint_trajectory_node"
   ursim:
     image: universalrobots/ursim_e-series:latest
     container_name: ursim
