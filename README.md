@@ -44,6 +44,7 @@ If "Play from Selection" is not available, configure URCaps:
 2. **Configure External Control:**
    - Navigate to: `Installation > URCaps > External Control`
    - Set the **Host IP** to `180.25.0.10` (or your modified IP from docker-compose.yml)
+   - Go to `Program>URCaps>External Control` and add a new program 
 
 3. Retry the "Play from Selection" step
 
