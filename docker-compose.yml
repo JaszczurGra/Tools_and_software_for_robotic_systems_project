@@ -45,7 +45,7 @@ services:
       initial_joint_controller:=scaled_joint_trajectory_controller
       controller_spawner_timeout:=60 & 
       ros2 run usb_cam usb_cam_node_exe &
-      ros2 run draw_rectangles rectangle_node
+      ros2 run draw_rectangles rectangle_node &
       ros2 run joint_trajectory_node joint_trajectory_node
   ursim:
     image: universalrobots/ursim_e-series:latest
