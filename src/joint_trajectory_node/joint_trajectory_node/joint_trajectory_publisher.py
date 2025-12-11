@@ -14,23 +14,23 @@ class TrajectoryPublisher(Node):
                                                      self.listener_callback, 10) 
         self.traj_msg = JointTrajectory()
         self.traj_msg.joint_names = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
-        point = JointTrajectoryPoint()
-        point.positions = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-        point.velocities = [0.0]*6
-        point.time_from_start.sec = 1
-        point.time_from_start.nanosec = 0
-        self.traj_msg.points.append(point)
+        self.point = JointTrajectoryPoint()
+        self.point.positions = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        self.point.velocities = [0.0]*6
+        self.point.time_from_start.sec = 1
+        self.point.time_from_start.nanosec = 0
+        self.traj_msg.points.append(self.point)
 
     def listener_callback(self, point_data):
-        point = JointTrajectoryPoint()
+
         if point_data.y <= 256:
-            point.positions = [0.5, 0.0, 0.0, 0.0, 0.0, 0.0]
+            self.point.positions[0] += 0.5
         else:
-            point.positions = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-        point.velocities = [0.0]*6
-        point.time_from_start.sec = 1
-        point.time_from_start.nanosec = 0
-        self.traj_msg.points = [point]
+            self.point.positions[0] -= 0.5
+        self.point.velocities = [0.0]*6
+        self.point.time_from_start.sec = 1
+        self.point.time_from_start.nanosec = 0
+        self.traj_msg.points = [self.point]
 
     def publish_trajectory(self):
         self.publisher.publish(self.traj_msg)
