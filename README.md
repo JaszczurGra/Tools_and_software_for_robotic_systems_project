@@ -14,6 +14,10 @@ git clone --recursive https://github.com/JaszczurGra/Tools_and_software_for_robo
 
 Start the Docker containers:
 
+```bash 
+xhost +local:docker
+```
+
 ```bash
 docker compose up
 ```

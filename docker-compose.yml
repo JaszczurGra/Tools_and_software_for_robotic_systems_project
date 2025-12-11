@@ -9,31 +9,17 @@ services:
     devices:
       - /dev/dri:/dev/dri
     privileged: true
-    # network_mode: host
-
     environment:
       - ROS_DOMAIN_ID=0
-      #for x 11
-      # - XAUTHORITY=/root/.Xauthority
-      - DISPLAY=:${DISPLAY}
-      - QT_QPA_PLATFORM=xcb 
+      - DISPLAY=${DISPLAY}
+      - QT_QPA_PLATFORM=xcb
       - QT_X11_NO_MITSHM=1
-      - XAUTHORITY=/root/.Xauthority
-      # - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR}
-
-      #for wayland
-      # - WAYLAND_DISPLAY=${WAYLAND_DISPLAY}
-
+      - XAUTHORITY=/tmp/.docker.xauth
     volumes:
-   
       - ./src:/app/project/src
-      #for arch wayland 
-      # - ${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}:/tmp/${WAYLAND_DISPLAY}
-      # - ${XDG_RUNTIME_DIR}:/run/user/$(id -u) 
-      #for x11
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
       - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority:rw
-      # - ${XAUTHORITY:-$HOME/.Xauthority}:/root/.Xauthority:rw
     command: >
       bash -c "sleep 20 && ros2 launch ur_robot_driver ur_control.launch.py
       ur_type:=ur5e
